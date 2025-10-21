@@ -81,7 +81,7 @@ public class Proveedores extends javax.swing.JFrame {
         getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 250, -1));
 
         CORREO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 210, 250, -1));
+        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 200, 250, -1));
 
         TELEFONO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 250, -1));
@@ -115,7 +115,7 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("CORREO");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 210, -1, 30));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, -1, 30));
 
         eliminar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eliminar.png"))); // NOI18N
@@ -183,27 +183,27 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("STATUS");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 300, -1, 30));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 300, -1, 30));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("DIRECCION");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, -1, 30));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("TELEFONO");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, -1, 30));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("NOMBRE");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, 30));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("RIF");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
