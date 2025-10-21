@@ -82,13 +82,13 @@ public class Proveedores extends javax.swing.JFrame {
         getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 180, -1));
 
         TELEFONO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 180, -1));
+        getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, 250, -1));
 
         DIRECCION.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(DIRECCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, 250, -1));
+        getContentPane().add(DIRECCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 250, -1));
 
         CORREO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 250, -1));
+        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 180, -1));
 
         STATUS.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         getContentPane().add(STATUS, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 300, 250, -1));
