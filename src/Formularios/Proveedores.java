@@ -19,16 +19,15 @@ import javax.swing.table.DefaultTableModel;
  * @author WILLROSS
  */
 public class Proveedores extends javax.swing.JFrame {
-    
+
     int idc;
-    
+
     Statement st;
     ResultSet rs;
-    
+
     Connection con;
-    
+
     DefaultTableModel Tabla1;
-    
 
     /**
      * Creates new form Proveedores
@@ -50,9 +49,9 @@ public class Proveedores extends javax.swing.JFrame {
 
         RIF = new javax.swing.JTextField();
         NOMBRE = new javax.swing.JTextField();
+        CORREO = new javax.swing.JTextField();
         TELEFONO = new javax.swing.JTextField();
         DIRECCION = new javax.swing.JTextField();
-        CORREO = new javax.swing.JTextField();
         STATUS = new javax.swing.JTextField();
         regresar = new javax.swing.JButton();
         limpiar = new javax.swing.JButton();
@@ -76,22 +75,22 @@ public class Proveedores extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         RIF.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(RIF, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 180, -1));
+        getContentPane().add(RIF, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 250, -1));
 
         NOMBRE.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 180, -1));
-
-        TELEFONO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, 250, -1));
-
-        DIRECCION.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(DIRECCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 250, -1));
+        getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 250, -1));
 
         CORREO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 180, -1));
+        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 210, 250, -1));
+
+        TELEFONO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 250, -1));
+
+        DIRECCION.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        getContentPane().add(DIRECCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 250, -1));
 
         STATUS.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(STATUS, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 300, 250, -1));
+        getContentPane().add(STATUS, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 300, 250, -1));
 
         regresar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         regresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
@@ -224,7 +223,7 @@ public class Proveedores extends javax.swing.JFrame {
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
         // TODO add your handling code here:
         Nuevo();
-        
+
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
@@ -239,7 +238,7 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
         // TODO add your handling code here:
-        
+
         Agregar();
         limpiartabla();
         consulta();
@@ -248,7 +247,7 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void ProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProveedoresMouseClicked
         // TODO add your handling code here:
-        
+
         int fila = Proveedores.getSelectedRow();
 
         if (fila != -1) {
@@ -260,9 +259,6 @@ public class Proveedores extends javax.swing.JFrame {
                 String direccion = String.valueOf(Proveedores.getValueAt(fila, 3));
                 String correo = String.valueOf(Proveedores.getValueAt(fila, 4));
                 String status = String.valueOf(Proveedores.getValueAt(fila, 5));
-               
-
-               
 
                 RIF.setText(Rif);
                 NOMBRE.setText(nombre);
@@ -270,7 +266,6 @@ public class Proveedores extends javax.swing.JFrame {
                 DIRECCION.setText(direccion);
                 CORREO.setText(correo);
                 STATUS.setText(status);
-                
 
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -347,9 +342,9 @@ public class Proveedores extends javax.swing.JFrame {
             }
         });
     }
-    
-    void consulta(){
-         String sql = "select * from proveedor";
+
+    void consulta() {
+        String sql = "select * from proveedor";
 
         try {
             Connection con = DBConexion.conectar();
@@ -374,49 +369,43 @@ public class Proveedores extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-        
+
     }
-    
-    void Agregar(){
-        
-        String rif=this.RIF.getText();
-        String nombre=this.NOMBRE.getText();
-        String Direccion=this.DIRECCION.getText();
-                String Correo=this.CORREO.getText();
-                String telefono=this.TELEFONO.getText();
-                String status=this.STATUS.getText();
-        
-        
-        
-        String Query="INSERT INTO Proveedor (rif,nombre,telefono,direccion,correo,status) VALUES (?,?,?,?,?,?)";
-        
+
+    void Agregar() {
+
+        String rif = this.RIF.getText();
+        String nombre = this.NOMBRE.getText();
+        String Direccion = this.TELEFONO.getText();
+        String Correo = this.DIRECCION.getText();
+        String telefono = this.CORREO.getText();
+        String status = this.STATUS.getText();
+
+        String Query = "INSERT INTO Proveedor (rif,nombre,telefono,direccion,correo,status) VALUES (?,?,?,?,?,?)";
+
         try {
-            
-            Connection con=DBConexion.conectar();
-            PreparedStatement ps=con.prepareStatement(Query);
-            
+
+            Connection con = DBConexion.conectar();
+            PreparedStatement ps = con.prepareStatement(Query);
+
             ps.setString(1, rif);
             ps.setString(2, nombre);
             ps.setString(3, telefono);
             ps.setString(4, Direccion);
             ps.setString(5, Correo);
             ps.setString(6, status);
-            
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Se ha registrado proveedor con exito!");
-            
-            
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
-            
+
         }
-        
+
     }
-    
-     void limpiartabla() {
+
+    void limpiartabla() {
 
         for (int i = 0; i < Proveedores.getRowCount(); i++) {
             Tabla1.removeRow(i);
@@ -426,60 +415,57 @@ public class Proveedores extends javax.swing.JFrame {
         }
 
     }
-     
-     void Nuevo(){
-         
-         this.CORREO.setText("");
-         this.DIRECCION.setText("");
-         this.RIF.setText("");
-         this.STATUS.setText("");
-         this.TELEFONO.setText("");
-         this.NOMBRE.setText("");
-     }
-     
-     void Modificado(){
-         
-          String rif=this.RIF.getText();
-        String nombre=this.NOMBRE.getText();
-        String Direccion=this.DIRECCION.getText();
-                String Correo=this.CORREO.getText();
-                String telefono=this.TELEFONO.getText();
-                String status=this.STATUS.getText();
-                
-         String Query="UPDATE proveedor SET nombre=?, telefono=?, direccion=?, correo=?,status=? WHERE RIF=?";
-         
-         
-         try {
-             Connection con=DBConexion.conectar();
-             PreparedStatement ps=con.prepareStatement(Query);
-             
-             ps.setString(1, nombre);
-             ps.setString(2, Direccion);
-             ps.setString(3, Correo);
-             ps.setString(4, telefono);
-             ps.setString(5, status);
-             ps.setString(6, rif); //Dato de referencia del proveedor
-             
-          int filas = ps.executeUpdate();
+
+    void Nuevo() {
+
+        this.DIRECCION.setText("");
+        this.TELEFONO.setText("");
+        this.RIF.setText("");
+        this.STATUS.setText("");
+        this.CORREO.setText("");
+        this.NOMBRE.setText("");
+    }
+
+    void Modificado() {
+
+        String rif = this.RIF.getText();
+        String nombre = this.NOMBRE.getText();
+        String Direccion = this.TELEFONO.getText();
+        String Correo = this.DIRECCION.getText();
+        String telefono = this.CORREO.getText();
+        String status = this.STATUS.getText();
+
+        String Query = "UPDATE proveedor SET nombre=?, telefono=?, direccion=?, correo=?,status=? WHERE RIF=?";
+
+        try {
+            Connection con = DBConexion.conectar();
+            PreparedStatement ps = con.prepareStatement(Query);
+
+            ps.setString(1, nombre);
+            ps.setString(2, Direccion);
+            ps.setString(3, Correo);
+            ps.setString(4, telefono);
+            ps.setString(5, status);
+            ps.setString(6, rif); //Dato de referencia del proveedor
+
+            int filas = ps.executeUpdate();
 
             if (filas > 0) {
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró el código proporcionado");
             }
-             
-         } catch (SQLException e) {
-             e.printStackTrace();
-             
-             
-         }
 
-     }
-     
-     
-     void eliminar(){
-         
-          int fila = Proveedores.getSelectedRow();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+    void eliminar() {
+
+        int fila = Proveedores.getSelectedRow();
 
         if (fila < 0) {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.");
@@ -508,8 +494,6 @@ public class Proveedores extends javax.swing.JFrame {
             ps.close();
             con.close();
 
-           
-
         } catch (NumberFormatException e) {
 
             JOptionPane.showMessageDialog(null, "Error interno: El código del repuesto no es un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -520,8 +504,7 @@ public class Proveedores extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-
-     }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CORREO;
