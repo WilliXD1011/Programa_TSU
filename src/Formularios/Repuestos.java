@@ -105,13 +105,13 @@ public class Repuestos extends javax.swing.JFrame {
         jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 200, 30));
 
         jTextField3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 70, 200, -1));
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, 200, -1));
 
         jTextField4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 270, 170, -1));
+        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 280, 200, -1));
 
         jTextField5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 320, 170, -1));
+        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 350, 200, -1));
 
         jTextField6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -133,10 +133,10 @@ public class Repuestos extends javax.swing.JFrame {
         jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, 200, -1));
 
         jTextField9.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 210, 170, -1));
+        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 210, 200, -1));
 
         jTextField10.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 140, 170, -1));
+        jPanel1.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 140, 200, -1));
 
         Repuesto1.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         Repuesto1.setModel(new javax.swing.table.DefaultTableModel(
@@ -227,12 +227,12 @@ public class Repuestos extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("IMPUESTO");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, -1, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 140, -1, 30));
 
         jLabel11.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("DESCRIPCION");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 210, -1, 30));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 210, -1, 30));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -252,17 +252,17 @@ public class Repuestos extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("STOCK MAXIMO");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 320, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 350, -1, 30));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("STOCK MINIMO");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 280, -1, 30));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("GANANCIA");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 70, -1, 30));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));

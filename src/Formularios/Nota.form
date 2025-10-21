@@ -102,7 +102,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="INVENTARIO DE PRODUCTO"/>
+            <Property name="text" type="java.lang.String" value="INVENTARIO DE REPUESTO"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -266,7 +266,7 @@
                   <Font name="Arial" size="11" style="1"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="6" rowCount="4">
+                  <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="CODIGO" type="java.lang.String"/>
                     <Column editable="false" title="NOMBRE" type="java.lang.String"/>
                     <Column editable="false" title="CANTIDAD" type="java.lang.String"/>
@@ -297,7 +297,7 @@
                   <Font name="Arial" size="11" style="1"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="6" rowCount="4">
+                  <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="CODIGO" type="java.lang.String"/>
                     <Column editable="false" title="NOMBRE" type="java.lang.String"/>
                     <Column editable="false" title="CANTIDAD" type="java.lang.String"/>

@@ -84,7 +84,7 @@ public class Nota extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("INVENTARIO DE PRODUCTO");
+        jLabel2.setText("INVENTARIO DE REPUESTO");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, -1, 43));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -139,10 +139,7 @@ public class Nota extends javax.swing.JFrame {
         jTable2.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "CODIGO", "NOMBRE", "CANTIDAD", "CATEGORIA", "PRECIO", "IMPUESTO"
@@ -170,10 +167,7 @@ public class Nota extends javax.swing.JFrame {
         jTable4.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "CODIGO", "NOMBRE", "CANTIDAD", "CATEGORIA", "PRECIO", "IMPUESTO"
