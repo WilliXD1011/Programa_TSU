@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -75,9 +77,19 @@ public class Proveedores extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         RIF.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        RIF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                RIFKeyReleased(evt);
+            }
+        });
         getContentPane().add(RIF, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 250, -1));
 
         NOMBRE.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        NOMBRE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NOMBREKeyReleased(evt);
+            }
+        });
         getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 250, -1));
 
         CORREO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -222,27 +234,27 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
         // TODO add your handling code here:
-        Nuevo();
+        limpiar();
+        limpiartabla();
+        consulta();
 
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
-        int I = JOptionPane.showConfirmDialog(null, "¿Esta seguro de regresar?", "Mensaje", JOptionPane.YES_NO_OPTION);
-        if (I == 0) {
-            Menu m = new Menu();
-            m.show();
-            dispose();
+        Menu m = new Menu();
+        m.show();
+        dispose();
 
-        }
+
     }//GEN-LAST:event_regresarActionPerformed
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
         // TODO add your handling code here:
 
-        Agregar();
+        registrar();
         limpiartabla();
         consulta();
-        Nuevo();
+        limpiar();
     }//GEN-LAST:event_registrarActionPerformed
 
     private void ProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProveedoresMouseClicked
@@ -297,7 +309,7 @@ public class Proveedores extends javax.swing.JFrame {
         Modificado();
         limpiartabla();
         consulta();
-        Nuevo();
+        limpiar();
     }//GEN-LAST:event_modificarActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
@@ -305,8 +317,34 @@ public class Proveedores extends javax.swing.JFrame {
         eliminar();
         limpiartabla();
         consulta();
-        Nuevo();
+        limpiar();
     }//GEN-LAST:event_eliminarActionPerformed
+
+    private void RIFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RIFKeyReleased
+        // TODO add your handling code here:
+        String CriterioBusqueda = this.RIF.getText().trim();
+
+        DefaultTableModel ModeloObtenido = (DefaultTableModel) Proveedores.getModel();
+
+        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
+
+        Proveedores.setRowSorter(ordenador);
+
+        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 0));
+    }//GEN-LAST:event_RIFKeyReleased
+
+    private void NOMBREKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBREKeyReleased
+        // TODO add your handling code here:
+        String CriterioBusqueda = this.NOMBRE.getText().trim();
+
+        DefaultTableModel ModeloObtenido = (DefaultTableModel) Proveedores.getModel();
+
+        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
+
+        Proveedores.setRowSorter(ordenador);
+
+        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 1));
+    }//GEN-LAST:event_NOMBREKeyReleased
 
     /**
      * @param args the command line arguments
@@ -372,13 +410,18 @@ public class Proveedores extends javax.swing.JFrame {
 
     }
 
-    void Agregar() {
+    void registrar() {
 
         String rif = this.RIF.getText();
+
         String nombre = this.NOMBRE.getText();
+
         String Direccion = this.TELEFONO.getText();
+
         String Correo = this.DIRECCION.getText();
+
         String telefono = this.CORREO.getText();
+
         String status = this.STATUS.getText();
 
         String Query = "INSERT INTO Proveedor (rif,nombre,telefono,direccion,correo,status) VALUES (?,?,?,?,?,?)";
@@ -386,37 +429,42 @@ public class Proveedores extends javax.swing.JFrame {
         try {
 
             Connection con = DBConexion.conectar();
+
             PreparedStatement ps = con.prepareStatement(Query);
 
             ps.setString(1, rif);
+
             ps.setString(2, nombre);
+
             ps.setString(3, telefono);
+
             ps.setString(4, Direccion);
+
             ps.setString(5, Correo);
+
             ps.setString(6, status);
 
             ps.executeUpdate();
+
             JOptionPane.showMessageDialog(null, "Se ha registrado proveedor con exito!");
 
         } catch (SQLException e) {
+
             e.printStackTrace();
 
         }
-
     }
 
     void limpiartabla() {
+        DefaultTableModel modelo = (DefaultTableModel) Proveedores.getModel();
 
-        for (int i = 0; i < Proveedores.getRowCount(); i++) {
-            Tabla1.removeRow(i);
-
-            i = i - 1;
-
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
         }
 
     }
 
-    void Nuevo() {
+    void limpiar() {
 
         this.DIRECCION.setText("");
         this.TELEFONO.setText("");
@@ -430,9 +478,9 @@ public class Proveedores extends javax.swing.JFrame {
 
         String rif = this.RIF.getText();
         String nombre = this.NOMBRE.getText();
-        String Direccion = this.TELEFONO.getText();
-        String Correo = this.DIRECCION.getText();
-        String telefono = this.CORREO.getText();
+        String telefono = this.TELEFONO.getText();
+        String Direccion = this.DIRECCION.getText();
+        String Correo = this.CORREO.getText();
         String status = this.STATUS.getText();
 
         String Query = "UPDATE proveedor SET nombre=?, telefono=?, direccion=?, correo=?,status=? WHERE RIF=?";
@@ -442,9 +490,9 @@ public class Proveedores extends javax.swing.JFrame {
             PreparedStatement ps = con.prepareStatement(Query);
 
             ps.setString(1, nombre);
-            ps.setString(2, Direccion);
-            ps.setString(3, Correo);
-            ps.setString(4, telefono);
+            ps.setString(2, telefono);
+            ps.setString(3, Direccion);
+            ps.setString(4, Correo);
             ps.setString(5, status);
             ps.setString(6, rif); //Dato de referencia del proveedor
 
@@ -464,46 +512,48 @@ public class Proveedores extends javax.swing.JFrame {
     }
 
     void eliminar() {
-
         int fila = Proveedores.getSelectedRow();
 
         if (fila < 0) {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.");
+
             limpiartabla();
             return;
         }
 
         try {
-            int codigoAEliminar = Integer.parseInt(String.valueOf(Proveedores.getValueAt(fila, 0)));
+
+            String identificadorAEliminar = String.valueOf(Proveedores.getValueAt(fila, 0));
+
+            if (identificadorAEliminar == null || identificadorAEliminar.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: El identificador del proveedor es nulo o vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             Connection con = DBConexion.conectar();
 
             String Query = "DELETE FROM proveedor WHERE rif = ?";
             PreparedStatement ps = con.prepareStatement(Query);
 
-            ps.setInt(1, codigoAEliminar);
+            ps.setString(1, identificadorAEliminar);
 
             int filasAfectadas = ps.executeUpdate();
 
             if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "El proveedor con código " + codigoAEliminar + " ha sido eliminado.");
+                JOptionPane.showMessageDialog(null, "El proveedor con RIF/Identificador " + identificadorAEliminar + " ha sido eliminado.");
+                limpiartabla();
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el proveedor con el código seleccionado.");
+                JOptionPane.showMessageDialog(null, "No se encontró el proveedor con el RIF/Identificador seleccionado.");
             }
 
             ps.close();
             con.close();
 
-        } catch (NumberFormatException e) {
-
-            JOptionPane.showMessageDialog(null, "Error interno: El código del repuesto no es un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
         } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-        }
 
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

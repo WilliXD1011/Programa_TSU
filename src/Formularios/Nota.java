@@ -19,7 +19,7 @@ public class Nota extends javax.swing.JFrame {
      */
     public Nota() {
         initComponents();
-         setIconImage(new ImageIcon(getClass().getResource("/icono.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/icono.png")).getImage());
     }
 
     /**
@@ -230,13 +230,10 @@ public class Nota extends javax.swing.JFrame {
     }//GEN-LAST:event_salidaActionPerformed
 
     private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
-        int I = JOptionPane.showConfirmDialog(null, "¿Esta seguro de regresar?", "Mensaje", JOptionPane.YES_NO_OPTION);
-        if (I == 0) {
-            Menu m = new Menu();
-            m.show();
-            dispose();
+        Menu m = new Menu();
+        m.show();
+        dispose();
 
-        }
     }//GEN-LAST:event_regresarActionPerformed
 
     /**

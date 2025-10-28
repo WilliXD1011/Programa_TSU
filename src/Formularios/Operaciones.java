@@ -196,12 +196,10 @@ public class Operaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
-        int I = JOptionPane.showConfirmDialog(null, "¿Esta seguro de regresar?", "Mensaje", JOptionPane.YES_NO_OPTION);
-        if (I == 0) {
-            Menu m = new Menu();
-            m.show();
-            dispose();
-        }
+        Menu m = new Menu();
+        m.show();
+        dispose();
+
     }//GEN-LAST:event_regresarActionPerformed
 
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
@@ -210,7 +208,7 @@ public class Operaciones extends javax.swing.JFrame {
         ActualizarRegistro();
         limpiartabla();
         consulta();
-        nuevo();
+        limpiar();
 
     }//GEN-LAST:event_actualizarActionPerformed
 
@@ -402,17 +400,18 @@ public class Operaciones extends javax.swing.JFrame {
     }
 
     void limpiartabla() {
-        for (int i = 0; i < Compras.getRowCount(); i++) {
-            Tabla.removeRow(i);
 
-            i = i - 1;
+        DefaultTableModel modelo = (DefaultTableModel) Compras.getModel();
+
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
 
         }
 
     }
-    
-    void nuevo(){
-        
+
+    void limpiar() {
+
         this.Categoria.setText("");
         this.Codigo.setText("");
         this.Nuevo_Impuesto.setText("");
