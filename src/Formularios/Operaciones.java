@@ -9,6 +9,7 @@ import Clases.DBConexion;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.sql.*;
+import java.util.regex.Pattern;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -35,6 +36,7 @@ public class Operaciones extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/icono.png")).getImage());
         consulta();
+        this.setDefaultCloseOperation(0);
     }
 
     /**
@@ -47,14 +49,15 @@ public class Operaciones extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        Codigo = new javax.swing.JTextField();
-        nombre = new javax.swing.JTextField();
-        Categoria = new javax.swing.JTextField();
-        Nuevo_Precio = new javax.swing.JTextField();
-        Nuevo_Impuesto = new javax.swing.JTextField();
+        CODIGO = new javax.swing.JTextField();
+        NOMBRE = new javax.swing.JTextField();
+        CATEGORIA = new javax.swing.JTextField();
+        PRECIO = new javax.swing.JTextField();
+        IMPUESTO = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Compras = new javax.swing.JTable();
         regresar = new javax.swing.JButton();
+        buscar = new javax.swing.JButton();
         actualizar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -69,30 +72,46 @@ public class Operaciones extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Codigo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        Codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+        CODIGO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        CODIGO.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                CodigoKeyReleased(evt);
+                CODIGOKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CODIGOKeyTyped(evt);
             }
         });
-        jPanel1.add(Codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 170, -1));
+        jPanel1.add(CODIGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, 220, 40));
 
-        nombre.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+        NOMBRE.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        NOMBRE.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                nombreKeyReleased(evt);
+                NOMBREKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                NOMBREKeyTyped(evt);
             }
         });
-        jPanel1.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 90, 170, 30));
+        jPanel1.add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, 220, 40));
 
-        Categoria.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(Categoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 430, 170, -1));
+        CATEGORIA.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jPanel1.add(CATEGORIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 490, 220, 40));
 
-        Nuevo_Precio.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(Nuevo_Precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 430, 170, 30));
+        PRECIO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        PRECIO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                PRECIOKeyTyped(evt);
+            }
+        });
+        jPanel1.add(PRECIO, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 490, 220, 40));
 
-        Nuevo_Impuesto.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(Nuevo_Impuesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 520, 170, 30));
+        IMPUESTO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        IMPUESTO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                IMPUESTOKeyTyped(evt);
+            }
+        });
+        jPanel1.add(IMPUESTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 580, 220, 40));
 
         Compras.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         Compras.setModel(new javax.swing.table.DefaultTableModel(
@@ -125,7 +144,7 @@ public class Operaciones extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Compras);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 1000, 240));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 1000, 300));
 
         regresar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         regresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
@@ -137,6 +156,16 @@ public class Operaciones extends javax.swing.JFrame {
         });
         jPanel1.add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 140, -1));
 
+        buscar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/buscar.png"))); // NOI18N
+        buscar.setText("BUSCAR");
+        buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
+
         actualizar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/guardar.png"))); // NOI18N
         actualizar.setText("ACTUALIZAR PRECIO");
@@ -145,32 +174,32 @@ public class Operaciones extends javax.swing.JFrame {
                 actualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 520, 210, -1));
+        jPanel1.add(actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 580, 210, -1));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("NUEVO IMPUESTO");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, 40));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 580, -1, 40));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("NUEVO PRECIO");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 430, -1, 30));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 490, -1, 40));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("CATEGORIA");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 430, -1, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 490, -1, 40));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("CODIGO");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 40));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("NOMBRE");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, -1, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, -1, 40));
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -205,40 +234,82 @@ public class Operaciones extends javax.swing.JFrame {
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
         // TODO add your handling code here:
 
-        ActualizarRegistro();
+        String codigoStr = this.CODIGO.getText().trim();
+        String Nombre = this.NOMBRE.getText().trim();
+        String categoria = this.CATEGORIA.getText().trim();
+        String precioStr = this.PRECIO.getText().trim();
+        String impuestoStr = this.IMPUESTO.getText().trim();
+
+        if (codigoStr.isEmpty() || Nombre.isEmpty() || categoria.isEmpty()
+                || precioStr.isEmpty() || impuestoStr.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "❌ Es necesario llenar todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String query = "UPDATE repuestos SET nombre=?, categoria=?, precio=?, impuesto=? WHERE codigo=?";
+
+        try {
+
+            int codigo = Integer.parseInt(codigoStr);
+            float precio = Float.parseFloat(precioStr);
+            float impuesto = Float.parseFloat(impuestoStr);
+
+            Connection con = DBConexion.conectar();
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setString(1, Nombre);
+            ps.setString(2, categoria);
+            ps.setFloat(3, precio);
+            ps.setFloat(4, impuesto);
+
+            ps.setInt(5, codigo);
+
+            int filas = ps.executeUpdate();
+
+            if (filas > 0) {
+                JOptionPane.showMessageDialog(null, "✅ Datos actualizados correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ No se encontró el repuesto con el código proporcionado (" + codigo + ").");
+            }
+
+            limpiartabla();
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(null,
+                    "❌ Asegúrese de que Código sea un entero, y Precio e Impuesto sean números válidos.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "❌ Error al actualizar los datos en la base de datos: " + e.getMessage());
+        }
+
         limpiartabla();
         consulta();
         limpiar();
 
     }//GEN-LAST:event_actualizarActionPerformed
 
-    private void CodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CodigoKeyReleased
-        // TODO add your handling code here:
+    private void CODIGOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CODIGOKeyReleased
 
-        String CriterioBusqueda = this.Codigo.getText().trim();
+    }//GEN-LAST:event_CODIGOKeyReleased
+
+    private void NOMBREKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBREKeyReleased
+        String CriterioBusqueda = this.NOMBRE.getText().trim();
+
+        String expresionRegEx = "(?i)" + Pattern.quote(CriterioBusqueda);
 
         DefaultTableModel ModeloObtenido = (DefaultTableModel) Compras.getModel();
-
         TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
 
         Compras.setRowSorter(ordenador);
 
-        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 0));
-    }//GEN-LAST:event_CodigoKeyReleased
-
-    private void nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyReleased
-        // TODO add your handling code here:
-
-        String CriterioBusqueda = this.nombre.getText().trim();
-
-        DefaultTableModel ModeloObtenido = (DefaultTableModel) Compras.getModel();
-
-        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
-
-        Compras.setRowSorter(ordenador);
-
-        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 1));
-    }//GEN-LAST:event_nombreKeyReleased
+        ordenador.setRowFilter(RowFilter.regexFilter(expresionRegEx, 1));
+    }//GEN-LAST:event_NOMBREKeyReleased
 
     private void ComprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ComprasMouseClicked
 
@@ -257,11 +328,11 @@ public class Operaciones extends javax.swing.JFrame {
                 float pre = Float.parseFloat(precioStr);
                 float imp = Float.parseFloat(impuestoStr);
 
-                Codigo.setText(String.valueOf(id));
-                nombre.setText(Nombre);
-                Categoria.setText(categoria);
-                Nuevo_Precio.setText(String.valueOf(pre));
-                Nuevo_Impuesto.setText(String.valueOf(imp));
+                CODIGO.setText(String.valueOf(id));
+                NOMBRE.setText(Nombre);
+                CATEGORIA.setText(categoria);
+                PRECIO.setText(String.valueOf(pre));
+                IMPUESTO.setText(String.valueOf(imp));
 
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -285,6 +356,90 @@ public class Operaciones extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_ComprasMouseClicked
+
+    private void PRECIOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PRECIOKeyTyped
+        char c = evt.getKeyChar();
+        String text = ((javax.swing.text.JTextComponent) evt.getSource()).getText();
+        if (!Character.isDigit(c) && c != '.' && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+            return;
+        }
+        if (c == '.' && text.contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_PRECIOKeyTyped
+
+    private void IMPUESTOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IMPUESTOKeyTyped
+        char c = evt.getKeyChar();
+        String text = ((javax.swing.text.JTextComponent) evt.getSource()).getText();
+        if (!Character.isDigit(c) && c != '.' && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+            return;
+        }
+        if (c == '.' && text.contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_IMPUESTOKeyTyped
+
+    private void NOMBREKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBREKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetter(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            if (!Character.isWhitespace(c) || c == java.awt.event.KeyEvent.VK_ENTER) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_NOMBREKeyTyped
+
+    private void CODIGOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CODIGOKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_CODIGOKeyTyped
+
+    private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
+        int encontrado = 0;
+        String query = "select * from repuestos";
+        String a = this.CODIGO.getText();
+
+        try {
+            Connection con = DBConexion.conectar();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+
+                if (rs.getString(1).equals(a)) {
+
+                    this.NOMBRE.setText(rs.getString(2));
+                    this.CATEGORIA.setText(rs.getString(4));
+                    this.PRECIO.setText(rs.getString(5));
+                    this.IMPUESTO.setText(rs.getString(6));
+
+                    encontrado = 1;
+                    break;
+
+                }
+
+            }
+
+            if (encontrado == 1) {
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "El repuesto no esta registrado.");
+
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage());
+        }
+    }//GEN-LAST:event_buscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -321,7 +476,7 @@ public class Operaciones extends javax.swing.JFrame {
         });
     }
 
-    void consulta() {
+    public void consulta() {
         String sql = "select * from repuestos";
 
         try {
@@ -349,57 +504,7 @@ public class Operaciones extends javax.swing.JFrame {
 
     }
 
-    void ActualizarRegistro() {
-
-        String codigoStr = this.Codigo.getText();
-        String Nombre = this.nombre.getText();
-
-        String categoria = this.Categoria.getText();
-        String precioStr = this.Nuevo_Precio.getText();
-        String impuestoStr = this.Nuevo_Impuesto.getText();
-
-        String query = "UPDATE repuestos SET nombre=?, categoria=?, precio=?, impuesto=? WHERE codigo=?";
-
-        try {
-
-            int codigo = Integer.parseInt(codigoStr);
-            float precio = Float.parseFloat(precioStr);
-            float impuesto = Float.parseFloat(impuestoStr);
-
-            Connection con = DBConexion.conectar();
-            PreparedStatement ps = con.prepareStatement(query);
-
-            ps.setString(1, Nombre);
-            ps.setString(2, categoria);
-            ps.setFloat(3, precio);
-            ps.setFloat(4, impuesto);
-
-            ps.setInt(5, codigo);
-
-            int filas = ps.executeUpdate();
-
-            if (filas > 0) {
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el código proporcionado");
-            }
-
-            limpiartabla();
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Error de formato: Asegúrese de que todos los campos numéricos (código, cantidad, precios, stocks) contengan sólo números válidos.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al actualizar los datos: " + e.getMessage());
-        }
-    }
-
-    void limpiartabla() {
+    public void limpiartabla() {
 
         DefaultTableModel modelo = (DefaultTableModel) Compras.getModel();
 
@@ -410,22 +515,24 @@ public class Operaciones extends javax.swing.JFrame {
 
     }
 
-    void limpiar() {
+    public void limpiar() {
 
-        this.Categoria.setText("");
-        this.Codigo.setText("");
-        this.Nuevo_Impuesto.setText("");
-        this.Nuevo_Precio.setText("");
-        this.nombre.setText("");
+        this.CATEGORIA.setText("");
+        this.CODIGO.setText("");
+        this.IMPUESTO.setText("");
+        this.PRECIO.setText("");
+        this.NOMBRE.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Categoria;
-    private javax.swing.JTextField Codigo;
+    private javax.swing.JTextField CATEGORIA;
+    private javax.swing.JTextField CODIGO;
     private javax.swing.JTable Compras;
-    private javax.swing.JTextField Nuevo_Impuesto;
-    private javax.swing.JTextField Nuevo_Precio;
+    private javax.swing.JTextField IMPUESTO;
+    private javax.swing.JTextField NOMBRE;
+    private javax.swing.JTextField PRECIO;
     private javax.swing.JButton actualizar;
+    private javax.swing.JButton buscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -435,7 +542,6 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nombre;
     private javax.swing.JButton regresar;
     // End of variables declaration//GEN-END:variables
 }

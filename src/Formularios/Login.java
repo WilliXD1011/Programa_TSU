@@ -1,16 +1,23 @@
 package Formularios;
 
+import Clases.DBConexion;
+import Clases.Hash;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-/** * @author WILLROSS
-
+/**
+ * * @author WILLROSS
+ *
  *
  */
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 public class Login extends javax.swing.JFrame {
 
     /**
@@ -19,8 +26,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/icono.png")).getImage());
-        this.jComboBox1.addItem("Administrador");
-        this.jComboBox1.addItem("Usuario");
+ this.setDefaultCloseOperation(0);
     }
 
     /**
@@ -32,70 +38,92 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jInternalFrame1 = new javax.swing.JInternalFrame();
+        login = new javax.swing.JTextField();
         Login = new javax.swing.JLabel();
         rol = new javax.swing.JLabel();
         Contraseña = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        acceder = new javax.swing.JButton();
+        salir = new javax.swing.JButton();
+        unlock = new javax.swing.JButton();
+        registrar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        pass = new javax.swing.JPasswordField();
         jCheckBox1 = new javax.swing.JCheckBox();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+
+        jInternalFrame1.setVisible(true);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sesión");
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        login.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        getContentPane().add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 218, 220, 40));
+
         Login.setBackground(new java.awt.Color(255, 255, 255));
         Login.setFont(new java.awt.Font("Arial", 1, 40)); // NOI18N
         Login.setForeground(new java.awt.Color(255, 255, 255));
         Login.setText("LOGIN");
-        getContentPane().add(Login, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
+        getContentPane().add(Login, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
 
         rol.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         rol.setForeground(new java.awt.Color(255, 255, 255));
-        rol.setText("Elegir rol");
-        getContentPane().add(rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, -1, -1));
+        rol.setText("User-Admin");
+        getContentPane().add(rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, -1, 40));
 
         Contraseña.setFont(new java.awt.Font("Arial", 1, 25)); // NOI18N
         Contraseña.setForeground(new java.awt.Color(255, 255, 255));
         Contraseña.setText("Contraseña");
-        getContentPane().add(Contraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 140, -1));
+        getContentPane().add(Contraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, 140, -1));
 
-        jButton1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/acceso.png"))); // NOI18N
-        jButton1.setText("Acceder");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        acceder.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        acceder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/acceso.png"))); // NOI18N
+        acceder.setText("Acceder  ");
+        acceder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                accederActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 380, -1, -1));
+        getContentPane().add(acceder, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 470, 160, -1));
 
-        jButton2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salir.png"))); // NOI18N
-        jButton2.setText("Salir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        salir.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salir.png"))); // NOI18N
+        salir.setText("Salir");
+        salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                salirActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 380, 115, -1));
+        getContentPane().add(salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, 115, -1));
 
-        jButton3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jButton3.setText("Desbloquear");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        unlock.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        unlock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/desbloquear.png"))); // NOI18N
+        unlock.setText("Unlock");
+        unlock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                unlockActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, -1, 38));
+        getContentPane().add(unlock, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, 40));
 
-        jPasswordField1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 250, 220, -1));
+        registrar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        registrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userr.png"))); // NOI18N
+        registrar.setText("Registrar");
+        registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(registrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 150, 40));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, -1, -1));
+
+        pass.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        getContentPane().add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 318, 220, 40));
 
         jCheckBox1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
@@ -105,18 +133,10 @@ public class Login extends javax.swing.JFrame {
                 jCheckBox1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 290, -1, -1));
-
-        jComboBox1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 220, -1));
+        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usar.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 470));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 530));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -125,73 +145,195 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
         // TODO add your handling code here:
-        int X = JOptionPane.showConfirmDialog(null, "¿Deseas salir del sistema?", "Cerrrar Sistema", JOptionPane.YES_NO_OPTION);
+        int X = JOptionPane.showConfirmDialog(null, "¿Deseas salir del sistema?", "Cerrar Sistema", JOptionPane.YES_NO_OPTION);
         if (X == 0) {
             System.exit(0);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String a = (String) this.jComboBox1.getSelectedItem();
-        String cont = this.jPasswordField1.getText();
-        int encontrado = 0;
-
-        if (a.equals("Administrador")) {
-            if (cont.equals("12512446")) {
-                Menu m = new Menu();
-                m.show();
-                dispose();
-                encontrado = 1;
-
-            }
-
-        }
-        if (a.equals("Usuario")) {
-            if (cont.equals("12345")) {
-                Menu m = new Menu();
-                m.show();
-                dispose();
-                encontrado = 1;
-
-            }
-
-        }
-        if (encontrado == 0) {
-            JOptionPane.showMessageDialog(this, "Contraseña incorrecta.", "Error", JOptionPane.ERROR_MESSAGE);
-            intentos--;
-        }
-        if (intentos == 0) {
-            JOptionPane.showMessageDialog(this, "El sistema se bloqueo", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            this.jButton1.setEnabled(false);
-            JOptionPane.showMessageDialog(null, "Presione desbloquear", "Información", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_salirActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
         if (jCheckBox1.isSelected()) {
-            jPasswordField1.setEchoChar((char) 0);
+            pass.setEchoChar((char) 0);
         } else {
-            jPasswordField1.setEchoChar('*');
+            pass.setEchoChar('*');
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        String a = (String) JOptionPane.showInputDialog(null, "Ingrese la contraseña para desbloquear", "Activar", JOptionPane.QUESTION_MESSAGE, null, null, ""
+    private void unlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unlockActionPerformed
+        String a = (String) JOptionPane.showInputDialog(
+                null,
+                "Ingrese la contraseña maestra",
+                "Activar",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                ""
         );
-        if (a.equals("32113024")) {
-            this.jButton1.setEnabled(true);
+        if (a != null) {
+            if (a.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "El campo no puede estar vacío.",
+                        "Advertencia",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            } else if (a.equals("32138367")) {
+                this.acceder.setEnabled(true);
+                this.salir.setEnabled(true);
+                this.registrar.setEnabled(true);
+                JOptionPane.showMessageDialog(null, "Contraseña correcta.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "La contraseña es incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Operación cancelada.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_unlockActionPerformed
     int intentos = 3;
+    private void accederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accederActionPerformed
+        String Usser = this.login.getText();
+        String PassPlana = new String(this.pass.getPassword());
+
+        if (Usser.isEmpty() || PassPlana.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Debe llenar ambos campos de User-Admin y Contraseña.",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT Contraseña, Rol FROM login WHERE Usuario = ?";
+
+        try {
+            con = DBConexion.conectar();
+            ps = con.prepareStatement(query);
+            ps.setString(1, Usser);
+            rs = ps.executeQuery();
+
+            boolean loginExitoso = false;
+
+            if (rs.next()) {
+                String hashDB = rs.getString("Contraseña");
+                String rolDB = rs.getString("Rol");
+
+                if (Hash.verificarContrasena(PassPlana, hashDB)) {
+
+                    loginExitoso = true;
+
+                    if (rolDB.equals("Administrador")) {
+                        Menu m = new Menu();
+                        m.show();
+                        dispose();
+                    } else if (rolDB.equals("Usuario")) {
+                        MenuU mu = new MenuU();
+                        mu.show();
+                        dispose();
+                    }
+
+                    intentos = 3;
+
+                    return;
+                }
+            }
+
+            if (!loginExitoso) {
+
+                intentos--;
+
+                if (intentos > 0) {
+                    JOptionPane.showMessageDialog(this,
+                            "Datos incorrectos. Le quedan " + intentos + " intentos.",
+                            "Error de Acceso",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+
+                    JOptionPane.showMessageDialog(this,
+                            "Se agotaron los 3 intentos. El sistema se ha bloqueado.",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
+
+                    this.acceder.setEnabled(false);
+                    this.salir.setEnabled(false);
+                    this.registrar.setEnabled(false);
+
+                    this.login.setText("");
+                    this.pass.setText("");
+                    JOptionPane.showMessageDialog(this,
+                            "Precione Unlock.",
+                            "Informacion",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "❌ Error al conectar o ejecutar la consulta: " + e.getMessage(), "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.err.println("Error al cerrar recursos: " + ex.getMessage());
+            }
+        }
+
+
+    }//GEN-LAST:event_accederActionPerformed
+
+    private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
+        String a = (String) JOptionPane.showInputDialog(
+                null,
+                "Ingrese la contraseña",
+                "Registrar User-Admin",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                ""
+        );
+
+        if (a != null) {
+
+            if (a.trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "El campo no puede estar vacío.",
+                        "Advertencia",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+            } else if (a.equals("32113024")) {
+
+                Registrar_Admin ra = new Registrar_Admin();
+                ra.show();
+                this.setVisible(false);
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "La contraseña es incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Operación cancelada.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_registrarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -226,17 +368,21 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Contraseña;
     private javax.swing.JLabel Login;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton acceder;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JTextField login;
+    private javax.swing.JPasswordField pass;
+    private javax.swing.JButton registrar;
     private javax.swing.JLabel rol;
+    private javax.swing.JButton salir;
+    private javax.swing.JButton unlock;
     // End of variables declaration//GEN-END:variables
 }

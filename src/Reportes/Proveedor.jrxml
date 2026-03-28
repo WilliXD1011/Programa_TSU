@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Proveedor" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2737e957-9379-4719-8343-b5f4ad24dcc9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#0000FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6E6FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Proveedor" uuid="272787b5-7dbb-44c8-bf76-1ddf0dea3e3f">
+		<queryString language="SQL">
+			<![CDATA[SELECT
+     proveedor.`rif` AS proveedor_rif,
+     proveedor.`nombre` AS proveedor_nombre,
+     proveedor.`telefono` AS proveedor_telefono,
+     proveedor.`direccion` AS proveedor_direccion,
+     proveedor.`correo` AS proveedor_correo,
+     proveedor.`status` AS proveedor_status
+FROM
+     `proveedor` proveedor]]>
+		</queryString>
+		<field name="proveedor_rif" class="java.lang.String"/>
+		<field name="proveedor_nombre" class="java.lang.String"/>
+		<field name="proveedor_telefono" class="java.lang.String"/>
+		<field name="proveedor_direccion" class="java.lang.String"/>
+		<field name="proveedor_correo" class="java.lang.String"/>
+		<field name="proveedor_status" class="java.lang.String"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT
+     proveedor.`rif` AS proveedor_rif,
+     proveedor.`nombre` AS proveedor_nombre,
+     proveedor.`telefono` AS proveedor_telefono,
+     proveedor.`direccion` AS proveedor_direccion,
+     proveedor.`correo` AS proveedor_correo,
+     proveedor.`status` AS proveedor_status
+FROM
+     `proveedor` proveedor]]>
+	</queryString>
+	<field name="proveedor_rif" class="java.lang.String"/>
+	<field name="proveedor_nombre" class="java.lang.String"/>
+	<field name="proveedor_telefono" class="java.lang.String"/>
+	<field name="proveedor_direccion" class="java.lang.String"/>
+	<field name="proveedor_correo" class="java.lang.String"/>
+	<field name="proveedor_status" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="201" y="14" width="401" height="50" uuid="97cad87e-e01e-4731-b499-5be19cdbbf26"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte Ferre Repuestos OC Proveedor]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="310" y="7" width="183" height="20" uuid="b489cc3c-e864-4627-8cca-5df25c75c172"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CREATE: WILLROSS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="330" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table" style="table" x="0" y="0" width="802" height="217" uuid="e8cd5f94-e54a-4046-b5a6-4613cf5e560c"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Proveedor" uuid="4bb75d46-0d42-4b1c-8160-4d3571840cf7">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="136" uuid="7b0661d7-bf5a-4acd-a6f5-43650a679242">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="136" height="30" uuid="f9d4d91f-58fb-4a43-9a7b-13ca16245e02"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[RIF]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="136" height="20" uuid="c48abf86-1cf5-4b2b-b2e1-d005ef35e7f5"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proveedor_rif}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="141" uuid="da60d462-785d-4916-b251-829009e49267">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="141" height="30" uuid="2ffe4355-9654-4e64-8552-79a12b61be5b"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[NOMBRE]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="141" height="20" uuid="3824c875-3805-44ff-b7b0-aad84ea128c4"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proveedor_nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="137" uuid="d42c352c-3e34-4cab-a5e0-42993d320266">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="137" height="30" uuid="f9cfa8c4-7fc7-4293-b42e-03567ee9fb12"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[TELEFONO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="137" height="20" uuid="08b9051a-2dc9-4aa1-9718-fcc19a6cafee"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proveedor_telefono}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="143" uuid="3e0197f0-f82d-4d70-abfb-81e7c2c77fe1">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="143" height="30" uuid="c84fbf4c-02db-4ac4-a74b-94bae7538f6e"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[DIRECCION]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="143" height="20" uuid="4f01a7c7-456f-4436-97da-0006c7a9c45d"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proveedor_direccion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="f54a63e0-ed53-4175-94ca-275c8b02ba28">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="30" uuid="59ce9681-6629-4559-9ac5-838a37e0cb10"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CORREO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="140" height="20" uuid="abb97153-adeb-419f-809f-7b57bf0da7f9"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proveedor_correo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="108" uuid="5abbe1e3-e5c7-4591-b227-f5329717e6f9">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="108" height="30" uuid="7159da6f-537f-41e6-adbc-4c96f2b0ab0e"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[STATUS]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="108" height="20" uuid="4695eabf-26cf-4629-9e00-eca797ddb61a"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="14" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proveedor_status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="309" y="310" width="184" height="20" uuid="50da69ac-6c59-4e81-aa65-5228ca8bcb35"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

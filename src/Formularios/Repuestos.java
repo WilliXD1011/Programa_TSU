@@ -6,13 +6,30 @@ package Formularios;
 
 import java.sql.*;
 import Clases.DBConexion;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Frame;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -36,8 +53,10 @@ public class Repuestos extends javax.swing.JFrame {
      */
     public Repuestos() {
         initComponents();
+        this.con = DBConexion.conectar();
         setIconImage(new ImageIcon(getClass().getResource("/icono.png")).getImage());
-        consulta();
+        Consulta();
+        this.setDefaultCloseOperation(0);
     }
 
     /**
@@ -50,6 +69,7 @@ public class Repuestos extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        FILTRADO = new javax.swing.JTextField();
         CODIGO = new javax.swing.JTextField();
         NOMBRE = new javax.swing.JTextField();
         IMPUESTO = new javax.swing.JTextField();
@@ -63,10 +83,13 @@ public class Repuestos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Repuesto1 = new javax.swing.JTable();
         eliminar = new javax.swing.JButton();
-        modificar = new javax.swing.JButton();
+        actualizar = new javax.swing.JButton();
         limpiar = new javax.swing.JButton();
         registrar = new javax.swing.JButton();
+        buscar = new javax.swing.JButton();
+        reporte = new javax.swing.JButton();
         regresar = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -85,7 +108,15 @@ public class Repuestos extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        CODIGO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        FILTRADO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        FILTRADO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                FILTRADOKeyReleased(evt);
+            }
+        });
+        jPanel1.add(FILTRADO, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 40, 340, 35));
+
+        CODIGO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CODIGO.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CODIGOKeyReleased(evt);
@@ -94,49 +125,82 @@ public class Repuestos extends javax.swing.JFrame {
                 CODIGOKeyTyped(evt);
             }
         });
-        jPanel1.add(CODIGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 200, -1));
+        jPanel1.add(CODIGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 220, 40));
 
-        NOMBRE.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        NOMBRE.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         NOMBRE.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 NOMBREKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                NOMBREKeyTyped(evt);
+            }
         });
-        jPanel1.add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 200, 30));
+        jPanel1.add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 220, 40));
 
-        IMPUESTO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(IMPUESTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, 200, -1));
+        IMPUESTO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        IMPUESTO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                IMPUESTOKeyTyped(evt);
+            }
+        });
+        jPanel1.add(IMPUESTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 90, 220, 40));
 
-        STOCKMINIMO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(STOCKMINIMO, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 280, 200, -1));
+        STOCKMINIMO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        STOCKMINIMO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                STOCKMINIMOKeyTyped(evt);
+            }
+        });
+        jPanel1.add(STOCKMINIMO, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 300, 220, 40));
 
-        STOCKMAXIMO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(STOCKMAXIMO, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 350, 200, -1));
+        STOCKMAXIMO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        STOCKMAXIMO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                STOCKMAXIMOKeyTyped(evt);
+            }
+        });
+        jPanel1.add(STOCKMAXIMO, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 370, 220, 40));
 
-        CANTIDAD.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        CANTIDAD.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CANTIDAD.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 CANTIDADKeyTyped(evt);
             }
         });
-        jPanel1.add(CANTIDAD, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 210, 200, -1));
+        jPanel1.add(CANTIDAD, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 220, 40));
 
-        PRECIO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(PRECIO, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 200, -1));
+        PRECIO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        PRECIO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                PRECIOKeyTyped(evt);
+            }
+        });
+        jPanel1.add(PRECIO, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, 220, 40));
 
-        CATEGORIA.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        CATEGORIA.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CATEGORIA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CATEGORIAActionPerformed(evt);
             }
         });
-        jPanel1.add(CATEGORIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, 200, -1));
+        jPanel1.add(CATEGORIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 220, 40));
 
-        DESCRIPCION.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(DESCRIPCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 210, 200, -1));
+        DESCRIPCION.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        DESCRIPCION.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                DESCRIPCIONKeyTyped(evt);
+            }
+        });
+        jPanel1.add(DESCRIPCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 230, 220, 40));
 
-        GANANCIA.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(GANANCIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 140, 200, -1));
+        GANANCIA.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        GANANCIA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                GANANCIAKeyTyped(evt);
+            }
+        });
+        jPanel1.add(GANANCIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 160, 220, 40));
 
         Repuesto1.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         Repuesto1.setModel(new javax.swing.table.DefaultTableModel(
@@ -172,7 +236,7 @@ public class Repuestos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Repuesto1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 1000, 210));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 1000, 220));
 
         eliminar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eliminar.png"))); // NOI18N
@@ -182,17 +246,17 @@ public class Repuestos extends javax.swing.JFrame {
                 eliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 640, 150, -1));
+        jPanel1.add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 650, 150, -1));
 
-        modificar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/modificar.png"))); // NOI18N
-        modificar.setText("MODIFICAR");
-        modificar.addActionListener(new java.awt.event.ActionListener() {
+        actualizar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/modificar.png"))); // NOI18N
+        actualizar.setText("ACTUALIZAR");
+        actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modificarActionPerformed(evt);
+                actualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 640, -1, -1));
+        jPanel1.add(actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 650, -1, -1));
 
         limpiar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/limpiar.png"))); // NOI18N
@@ -202,7 +266,7 @@ public class Repuestos extends javax.swing.JFrame {
                 limpiarActionPerformed(evt);
             }
         });
-        jPanel1.add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 640, -1, -1));
+        jPanel1.add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 650, -1, -1));
 
         registrar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         registrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/registrar.png"))); // NOI18N
@@ -212,7 +276,27 @@ public class Repuestos extends javax.swing.JFrame {
                 registrarActionPerformed(evt);
             }
         });
-        jPanel1.add(registrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 640, -1, -1));
+        jPanel1.add(registrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 650, -1, -1));
+
+        buscar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/buscar.png"))); // NOI18N
+        buscar.setText("BUSCAR");
+        buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 650, -1, -1));
+
+        reporte.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        reporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/report.png"))); // NOI18N
+        reporte.setText("REPORTE");
+        reporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reporteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(reporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 650, -1, -1));
 
         regresar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         regresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
@@ -224,60 +308,65 @@ public class Repuestos extends javax.swing.JFrame {
         });
         jPanel1.add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 140, -1));
 
+        jLabel13.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("FILTRADO");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, -1, 40));
+
         jLabel12.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("GANANCIA");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 140, -1, 30));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, -1, 50));
 
         jLabel11.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("DESCRIPCION");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 210, -1, 30));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 230, -1, 40));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("CATEGORIA");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(65, 280, -1, 30));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, 30));
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("PRECIO");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 350, -1, 30));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 370, -1, 40));
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("CANTIDAD");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, -1, 30));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, -1, 30));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("STOCK MAXIMO");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 350, -1, 30));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 370, -1, 40));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("STOCK MINIMO");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 280, -1, 30));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 300, -1, 40));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("IMPUESTO ");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 70, -1, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, -1, 40));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("NOMBRE");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, -1, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("REPUESTOS");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("CODIGO");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usar.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 720));
@@ -312,10 +401,81 @@ public class Repuestos extends javax.swing.JFrame {
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
         // TODO add your handling code here:
-        Registrar();
+        String codigo = this.CODIGO.getText().trim();
+        String nombre = this.NOMBRE.getText().trim();
+        String cantidad = this.CANTIDAD.getText().trim();
+        String categoria = this.CATEGORIA.getText().trim();
+        String precio = this.PRECIO.getText().trim();
+        String impuesto = this.IMPUESTO.getText().trim();
+        String ganancia = this.GANANCIA.getText().trim();
+        String descripcion = this.DESCRIPCION.getText().trim();
+        String StockMin = this.STOCKMINIMO.getText().trim();
+        String StockMax = this.STOCKMAXIMO.getText().trim();
+
+        int cod, cant, Sto, StoM;
+        float p, imp, gan;
+
+        if (codigo.isEmpty() || nombre.isEmpty() || cantidad.isEmpty() || categoria.isEmpty()
+                || precio.isEmpty() || impuesto.isEmpty() || ganancia.isEmpty() || descripcion.isEmpty()
+                || StockMin.isEmpty() || StockMax.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "❌ Todos los campos son obligatorios. Por favor, complete la información.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            cod = Integer.parseInt(codigo);
+            cant = Integer.parseInt(cantidad);
+            p = Float.parseFloat(precio);
+            imp = Float.parseFloat(impuesto);
+            gan = Float.parseFloat(ganancia);
+            Sto = Integer.parseInt(StockMin);
+            StoM = Integer.parseInt(StockMax);
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(null, "❌ Verifique los campos numéricos:\n- Código, Cantidad, Stock Mínimo/Máximo deben ser números enteros.\n- Precio, Ganancia, Impuesto pueden ser números decimales.", "Error de Formato Numérico", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (Sto >= StoM) {
+            JOptionPane.showMessageDialog(null, "❌ El Stock Mínimo (" + Sto + ") debe ser menor que el Stock Máximo (" + StoM + ").", "Error de Lógica de Stock", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String query = "INSERT INTO repuestos(codigo,nombre,cantidad,categoria,precio,ganancia,impuesto,descripcion,stock_minimo,stock_maximo) VALUES (?,?,?,?,?,?,?,?,?,?)";
+
+        try {
+
+            Connection con = DBConexion.conectar();
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setInt(1, cod);
+            ps.setString(2, nombre);
+            ps.setInt(3, cant);
+            ps.setString(4, categoria);
+            ps.setFloat(5, p);
+            ps.setFloat(6, gan);
+            ps.setFloat(7, imp);
+            ps.setString(8, descripcion);
+            ps.setInt(9, Sto);
+            ps.setInt(10, StoM);
+
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "✅ Se ha registrado el repuesto con éxito.");
+            limpiartabla();
+            Consulta();
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "❌ Error al registrar en la base de datos: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            limpiartabla();
+            Consulta();
+        }
+
         limpiartabla();
-        consulta();
-        limpiar();
+        Consulta();
+        Limpiar();
     }//GEN-LAST:event_registrarActionPerformed
 
     private void Repuesto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Repuesto1MouseClicked
@@ -384,56 +544,166 @@ public class Repuestos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_Repuesto1MouseClicked
 
-    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+    private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
         // TODO add your handling code here:
-        modificar();
-        limpiartabla();
-        consulta();
-        limpiar();
 
-    }//GEN-LAST:event_modificarActionPerformed
+        String codigo = this.CODIGO.getText().trim();
+        String nombre = this.NOMBRE.getText().trim();
+        String cantidad = this.CANTIDAD.getText().trim();
+        String categoria = this.CATEGORIA.getText().trim();
+        String precio = this.PRECIO.getText().trim();
+        String impuesto = this.IMPUESTO.getText().trim();
+
+        String ganancia = this.GANANCIA.getText().trim();
+        String descripcion = this.DESCRIPCION.getText().trim();
+        String StockMin = this.STOCKMINIMO.getText().trim();
+        String StockMax = this.STOCKMAXIMO.getText().trim();
+
+        int cod, cant, Sto, StoM;
+        float gan;
+
+        if (codigo.isEmpty() || nombre.isEmpty() || cantidad.isEmpty()
+                || ganancia.isEmpty() || descripcion.isEmpty()
+                || StockMin.isEmpty() || StockMax.isEmpty()
+                || categoria.isEmpty() || precio.isEmpty() || impuesto.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "❌ Todos los campos son obligatorios. Por favor, complete la información para actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            cod = Integer.parseInt(codigo);
+            cant = Integer.parseInt(cantidad);
+
+            gan = Float.parseFloat(ganancia);
+            Sto = Integer.parseInt(StockMin);
+            StoM = Integer.parseInt(StockMax);
+
+            Float.parseFloat(precio);
+            Float.parseFloat(impuesto);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "❌ Verifique los campos numéricos:\n- Código, Cantidad y Stocks deben ser números enteros.\n- Ganancia, Precio e Impuesto pueden ser números decimales.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (Sto >= StoM) {
+            JOptionPane.showMessageDialog(null, "❌ El Stock Mínimo (" + Sto + ") debe ser menor que el Stock Máximo (" + StoM + ").", "Error de Lógica de Stock", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String query = "UPDATE repuestos SET nombre=?, cantidad=?, ganancia=?, descripcion=?, stock_minimo=?, stock_maximo=? WHERE codigo=?";
+
+        try (Connection con = DBConexion.conectar();
+                PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, nombre);
+            ps.setInt(2, cant);
+            ps.setFloat(3, gan);
+            ps.setString(4, descripcion);
+            ps.setInt(5, Sto);
+            ps.setInt(6, StoM);
+            ps.setInt(7, cod);
+
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                JOptionPane.showMessageDialog(null, "✅ Los datos del repuesto han sido actualizados con éxito.");
+
+                limpiartabla();
+                Consulta();
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el repuesto con el código (" + codigo + ") para actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "❌ Error al actualizar en la base de datos: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+        limpiartabla();
+        Consulta();
+        Limpiar();
+
+    }//GEN-LAST:event_actualizarActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         // TODO add your handling code here:
 
-        eliminar();
+        int fila = Repuesto1.getSelectedRow();
+
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            limpiartabla();
+            return;
+        }
+
+        try {
+
+            int codigoAEliminar = Integer.parseInt(String.valueOf(Repuesto1.getValueAt(fila, 0)));
+
+            int opcion = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Está seguro de eliminar el repuesto con código " + codigoAEliminar + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+
+                Connection con = DBConexion.conectar();
+                String Query = "DELETE FROM repuestos WHERE codigo = ?";
+                PreparedStatement ps = con.prepareStatement(Query);
+
+                ps.setInt(1, codigoAEliminar);
+
+                int filasAfectadas = ps.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(null, "✅ El repuesto con código " + codigoAEliminar + " ha sido eliminado con éxito.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "❌ No se encontró el repuesto con el código seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                ps.close();
+                con.close();
+
+                limpiartabla();
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "La eliminación ha sido cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error interno: El código del repuesto no es un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         limpiartabla();
-        consulta();
+        Consulta();
 
 
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void NOMBREKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBREKeyReleased
         // TODO add your handling code here:
-        String CriterioBusqueda = this.NOMBRE.getText().trim();
 
-        DefaultTableModel ModeloObtenido = (DefaultTableModel) Repuesto1.getModel();
-
-        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
-
-        Repuesto1.setRowSorter(ordenador);
-
-        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 1));
 
     }//GEN-LAST:event_NOMBREKeyReleased
 
     private void CODIGOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CODIGOKeyReleased
-        // TODO add your handling code here:
-        String CriterioBusqueda = this.CODIGO.getText().trim();
 
-        DefaultTableModel ModeloObtenido = (DefaultTableModel) Repuesto1.getModel();
-
-        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
-
-        Repuesto1.setRowSorter(ordenador);
-
-        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 0));
     }//GEN-LAST:event_CODIGOKeyReleased
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
         // TODO add your handling code here:
-
-        limpiar();
+        Limpiar();
+        limpiartabla();
+        Consulta();
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void Repuesto1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Repuesto1MouseEntered
@@ -442,19 +712,170 @@ public class Repuestos extends javax.swing.JFrame {
 
     private void CANTIDADKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CANTIDADKeyTyped
         char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
-
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
             evt.consume();
         }
     }//GEN-LAST:event_CANTIDADKeyTyped
 
     private void CODIGOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CODIGOKeyTyped
         char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
-
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
             evt.consume();
         }
     }//GEN-LAST:event_CODIGOKeyTyped
+
+    private void STOCKMINIMOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_STOCKMINIMOKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_STOCKMINIMOKeyTyped
+
+    private void STOCKMAXIMOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_STOCKMAXIMOKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_STOCKMAXIMOKeyTyped
+
+    private void NOMBREKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBREKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetter(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            if (!Character.isWhitespace(c) || c == java.awt.event.KeyEvent.VK_ENTER) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_NOMBREKeyTyped
+
+    private void DESCRIPCIONKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DESCRIPCIONKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetter(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            if (!Character.isWhitespace(c) || c == java.awt.event.KeyEvent.VK_ENTER) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_DESCRIPCIONKeyTyped
+
+    private void PRECIOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PRECIOKeyTyped
+        char c = evt.getKeyChar();
+        String text = ((javax.swing.text.JTextComponent) evt.getSource()).getText();
+        if (!Character.isDigit(c) && c != '.' && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+            return;
+        }
+        if (c == '.' && text.contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_PRECIOKeyTyped
+
+    private void IMPUESTOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IMPUESTOKeyTyped
+        char c = evt.getKeyChar();
+        String text = ((javax.swing.text.JTextComponent) evt.getSource()).getText();
+        if (!Character.isDigit(c) && c != '.' && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+            return;
+        }
+        if (c == '.' && text.contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_IMPUESTOKeyTyped
+
+    private void GANANCIAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GANANCIAKeyTyped
+        char c = evt.getKeyChar();
+        String text = ((javax.swing.text.JTextComponent) evt.getSource()).getText();
+        if (!Character.isDigit(c) && c != '.' && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+            return;
+        }
+        if (c == '.' && text.contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_GANANCIAKeyTyped
+
+    private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
+        int encontrado = 0;
+        String query = "select * from repuestos";
+        String a = this.CODIGO.getText();
+
+        try {
+            Connection con = DBConexion.conectar();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+
+                if (rs.getString(1).equals(a)) {
+
+                    this.NOMBRE.setText(rs.getString(2));
+                    this.CANTIDAD.setText(rs.getString(3));
+                    this.CATEGORIA.setText(rs.getString(4));
+                    this.PRECIO.setText(rs.getString(5));
+                    this.IMPUESTO.setText(rs.getString(6));
+                    this.GANANCIA.setText(rs.getString(7));
+                    this.DESCRIPCION.setText(rs.getString(8));
+                    this.STOCKMINIMO.setText(rs.getString(9));
+                    this.STOCKMAXIMO.setText(rs.getString(10));
+
+                    encontrado = 1;
+                    break;
+
+                }
+
+            }
+
+            if (encontrado == 1) {
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "El repuesto no esta registrado.");
+
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage());
+        }
+    }//GEN-LAST:event_buscarActionPerformed
+
+    private void reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteActionPerformed
+        try {
+
+            InputStream archivo = getClass().getResourceAsStream("/Reportes/Repuestos.jrxml");
+            JasperDesign dise = JRXmlLoader.load(archivo);
+            JasperReport jr = JasperCompileManager.compileReport(dise);
+
+            Map<String, Object> parametros = new HashMap<>();
+
+            JasperPrint jp = JasperFillManager.fillReport(jr, parametros, con);
+
+            JasperViewer viewer = new JasperViewer(jp, false);
+
+            disableAllExceptSave(viewer);
+
+            viewer.setExtendedState(Frame.MAXIMIZED_BOTH);
+            viewer.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_reporteActionPerformed
+
+    private void FILTRADOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FILTRADOKeyReleased
+        String CriterioBusqueda = this.FILTRADO.getText().trim();
+
+        String expresionRegEx = "(?i)" + Pattern.quote(CriterioBusqueda);
+
+        DefaultTableModel ModeloObtenido = (DefaultTableModel) Repuesto1.getModel();
+        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
+
+        Repuesto1.setRowSorter(ordenador);
+
+        ordenador.setRowFilter(RowFilter.regexFilter(expresionRegEx, 1));
+    }//GEN-LAST:event_FILTRADOKeyReleased
 
     /**
      * @param args the command line arguments
@@ -481,7 +902,54 @@ public class Repuestos extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new Repuestos().setVisible(true));
     }
 
-    void consulta() {
+    private void disableAllNavigation(JasperViewer viewer) {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                disableAllExceptSave(viewer.getContentPane());
+            }
+        });
+    }
+
+    private void disableAllExceptSave(Container container) {
+        for (Component comp : container.getComponents()) {
+
+            if (comp instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) comp;
+                if (!isSaveButton(button)) {
+                    button.setEnabled(false);
+                }
+            } else if (comp instanceof JTextField) {
+                JTextField textField = (JTextField) comp;
+                textField.setEnabled(false);
+                textField.setEditable(false);
+            } else if (comp instanceof JComboBox) {
+                ((JComboBox<?>) comp).setEnabled(false);
+            }
+
+            if (comp instanceof Container) {
+                disableAllExceptSave((Container) comp);
+            }
+        }
+    }
+
+    private boolean isSaveButton(AbstractButton button) {
+        String toolTip = button.getToolTipText();
+        if (toolTip != null) {
+            String lowerToolTip = toolTip.toLowerCase();
+
+            return lowerToolTip.contains("save")
+                    || lowerToolTip.contains("guardar")
+                    || lowerToolTip.contains("export")
+                    || lowerToolTip.contains("pdf")
+                    || lowerToolTip.contains("exportar")
+                    || lowerToolTip.contains("print")
+                    || lowerToolTip.contains("imprimir");
+        }
+        return false;
+    }
+
+    public void Consulta() {
         String sql = "select * from repuestos";
 
         try {
@@ -514,78 +982,7 @@ public class Repuestos extends javax.swing.JFrame {
 
     }
 
-    void Registrar() {
-
-        String codigo = this.CODIGO.getText().trim();
-        String nombre = this.NOMBRE.getText().trim();
-        String cantidad = this.CANTIDAD.getText().trim();
-
-        String categoria = this.CATEGORIA.getText().trim();
-        String precio = this.PRECIO.getText().trim();
-        String impuesto = this.IMPUESTO.getText().trim();
-
-        String ganancia = this.GANANCIA.getText().trim();
-        String descripcion = this.DESCRIPCION.getText().trim();
-        String StockMin = this.STOCKMINIMO.getText().trim();
-        String StockMax = this.STOCKMAXIMO.getText().trim();
-
-        int cod, cant, Sto, StoM;
-        float p, imp, gan;
-
-        if (codigo.isEmpty() || nombre.isEmpty() || cantidad.isEmpty() || categoria.isEmpty()
-                || precio.isEmpty() || impuesto.isEmpty() || ganancia.isEmpty() || StockMin.isEmpty()
-                || StockMax.isEmpty()) {
-
-            JOptionPane.showMessageDialog(null, "Todos los campos (Código, Nombre, Cantidad, Categoría, Precio,Impuesto, Ganancia,  Stock Mínimo y Máximo) deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        try {
-            cod = Integer.parseInt(codigo);
-            cant = Integer.parseInt(cantidad);
-            p = Float.parseFloat(precio);
-            imp = Float.parseFloat(impuesto);
-            gan = Float.parseFloat(ganancia);
-            Sto = Integer.parseInt(StockMin);
-            StoM = Integer.parseInt(StockMax);
-        } catch (NumberFormatException e) {
-
-            JOptionPane.showMessageDialog(null, "Verifique los campos numéricos (Código, Cantidad, Stock Mínimo/Máximo deben ser enteros; Precio, Ganancia, Impuesto pueden ser decimales).", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String query = "INSERT INTO repuestos(codigo,nombre,cantidad,categoria,precio,ganancia,impuesto,descripcion,stock_minimo,stock_maximo) VALUES (?,?,?,?,?,?,?,?,?,?)";
-
-        try {
-            Connection con = DBConexion.conectar();
-            PreparedStatement ps = con.prepareStatement(query);
-
-            ps.setInt(1, cod);
-            ps.setString(2, nombre);
-            ps.setInt(3, cant);
-            ps.setString(4, categoria);
-            ps.setFloat(5, p);
-            ps.setFloat(6, gan);
-            ps.setFloat(7, imp);
-            ps.setString(8, descripcion);
-            ps.setInt(9, Sto);
-            ps.setInt(10, StoM);
-
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Se ha registrado el repuesto con éxito.");
-            limpiartabla();
-
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error al registrar en la base de datos: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            limpiartabla();
-            consulta();
-        }
-
-    }
-
-    void limpiartabla() {
+    public void limpiartabla() {
 
         DefaultTableModel modelo = (DefaultTableModel) Repuesto1.getModel();
 
@@ -595,117 +992,7 @@ public class Repuestos extends javax.swing.JFrame {
 
     }
 
-    void modificar() {
-        String codigo = this.CODIGO.getText().trim();
-        String nombre = this.NOMBRE.getText().trim();
-        String cantidad = this.CANTIDAD.getText().trim();
-
-        String categoria = this.CATEGORIA.getText().trim();
-        String precio = this.PRECIO.getText().trim();
-        String impuesto = this.IMPUESTO.getText().trim();
-
-        String ganancia = this.GANANCIA.getText().trim();
-        String descripcion = this.DESCRIPCION.getText().trim();
-        String StockMin = this.STOCKMINIMO.getText().trim();
-        String StockMax = this.STOCKMAXIMO.getText().trim();
-
-        int cod, cant, Sto, StoM;
-        float gan;
-
-        if (codigo.isEmpty() || nombre.isEmpty() || cantidad.isEmpty() || ganancia.isEmpty()
-                || descripcion.isEmpty()
-                || StockMin.isEmpty() || StockMax.isEmpty()) {
-
-        }
-
-        try {
-            cod = Integer.parseInt(codigo);
-            cant = Integer.parseInt(cantidad);
-
-            gan = Float.parseFloat(ganancia);
-            Sto = Integer.parseInt(StockMin);
-            StoM = Integer.parseInt(StockMax);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Verifique que Código, Cantidad y Stocks sean enteros, y Ganancia sea un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String query = "UPDATE repuestos SET nombre=?, cantidad=?, ganancia=?, descripcion=?, stock_minimo=?, stock_maximo=? WHERE codigo=?";
-
-        try (Connection con = DBConexion.conectar();
-                PreparedStatement ps = con.prepareStatement(query)) {
-
-            ps.setString(1, nombre);
-            ps.setInt(2, cant);
-
-            ps.setFloat(3, gan);
-            ps.setString(4, descripcion);
-            ps.setInt(5, Sto);
-            ps.setInt(6, StoM);
-
-            ps.setInt(7, cod);
-
-            int filasAfectadas = ps.executeUpdate();
-
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Los datos del repuesto han sido actualizados con éxito.)");
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el repuesto con el código proporcionado para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar en la base de datos: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-
-        }
-    }
-
-    void eliminar() {
-        int fila = Repuesto1.getSelectedRow();
-
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.");
-            limpiartabla();
-            return;
-        }
-
-        try {
-            int codigoAEliminar = Integer.parseInt(String.valueOf(Repuesto1.getValueAt(fila, 0)));
-
-            Connection con = DBConexion.conectar();
-
-            String Query = "DELETE FROM repuestos WHERE codigo = ?";
-            PreparedStatement ps = con.prepareStatement(Query);
-
-            ps.setInt(1, codigoAEliminar);
-
-            int filasAfectadas = ps.executeUpdate();
-
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "El respuesto con código " + codigoAEliminar + " ha sido eliminado.");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el repuesto con el código seleccionado.");
-            }
-
-            ps.close();
-            con.close();
-
-            limpiartabla();
-
-        } catch (NumberFormatException e) {
-
-            JOptionPane.showMessageDialog(null, "Error interno: El código del repuesto no es un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
-
-    void limpiar() {
+    public void Limpiar() {
         CODIGO.setText("");
         NOMBRE.setText("");
         IMPUESTO.setText("");
@@ -725,6 +1012,7 @@ public class Repuestos extends javax.swing.JFrame {
     private javax.swing.JTextField CATEGORIA;
     private javax.swing.JTextField CODIGO;
     private javax.swing.JTextField DESCRIPCION;
+    private javax.swing.JTextField FILTRADO;
     private javax.swing.JTextField GANANCIA;
     private javax.swing.JTextField IMPUESTO;
     private javax.swing.JTextField NOMBRE;
@@ -732,11 +1020,14 @@ public class Repuestos extends javax.swing.JFrame {
     private javax.swing.JTable Repuesto1;
     private javax.swing.JTextField STOCKMAXIMO;
     private javax.swing.JTextField STOCKMINIMO;
+    private javax.swing.JButton actualizar;
+    private javax.swing.JButton buscar;
     private javax.swing.JButton eliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -748,8 +1039,8 @@ public class Repuestos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton limpiar;
-    private javax.swing.JButton modificar;
     private javax.swing.JButton registrar;
     private javax.swing.JButton regresar;
+    private javax.swing.JButton reporte;
     // End of variables declaration//GEN-END:variables
 }

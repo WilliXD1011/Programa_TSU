@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Repuestos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ade3d25e-c0b1-443f-98bf-820831947d14">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#0000FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6E6FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#0000FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#E6E6FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#0000FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#E6E6FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Repuestos" uuid="f9b25e3a-3dab-44fa-91a9-f8a429d2a7ac">
+		<queryString language="SQL">
+			<![CDATA[SELECT
+     repuestos.`codigo` AS repuestos_codigo,
+     repuestos.`nombre` AS repuestos_nombre,
+     repuestos.`cantidad` AS repuestos_cantidad,
+     repuestos.`categoria` AS repuestos_categoria,
+     repuestos.`precio` AS repuestos_precio,
+     repuestos.`impuesto` AS repuestos_impuesto,
+     repuestos.`ganancia` AS repuestos_ganancia,
+     repuestos.`descripcion` AS repuestos_descripcion,
+     repuestos.`stock_minimo` AS repuestos_stock_minimo,
+     repuestos.`stock_maximo` AS repuestos_stock_maximo
+FROM
+     `repuestos` repuestos]]>
+		</queryString>
+		<field name="repuestos_codigo" class="java.lang.Integer"/>
+		<field name="repuestos_nombre" class="java.lang.String"/>
+		<field name="repuestos_cantidad" class="java.lang.Integer"/>
+		<field name="repuestos_categoria" class="java.lang.String"/>
+		<field name="repuestos_precio" class="java.lang.Float"/>
+		<field name="repuestos_impuesto" class="java.lang.Double"/>
+		<field name="repuestos_ganancia" class="java.lang.Double"/>
+		<field name="repuestos_descripcion" class="java.lang.String"/>
+		<field name="repuestos_stock_minimo" class="java.lang.Integer"/>
+		<field name="repuestos_stock_maximo" class="java.lang.Integer"/>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     repuestos.`codigo` AS repuestos_codigo,
+     repuestos.`nombre` AS repuestos_nombre,
+     repuestos.`cantidad` AS repuestos_cantidad,
+     repuestos.`categoria` AS repuestos_categoria,
+     repuestos.`precio` AS repuestos_precio,
+     repuestos.`impuesto` AS repuestos_impuesto,
+     repuestos.`ganancia` AS repuestos_ganancia,
+     repuestos.`descripcion` AS repuestos_descripcion,
+     repuestos.`stock_minimo` AS repuestos_stock_minimo,
+     repuestos.`stock_maximo` AS repuestos_stock_maximo
+FROM
+     `repuestos` repuestos]]>
+	</queryString>
+	<field name="repuestos_codigo" class="java.lang.Integer"/>
+	<field name="repuestos_nombre" class="java.lang.String"/>
+	<field name="repuestos_cantidad" class="java.lang.Integer"/>
+	<field name="repuestos_categoria" class="java.lang.String"/>
+	<field name="repuestos_precio" class="java.lang.Float"/>
+	<field name="repuestos_impuesto" class="java.lang.Double"/>
+	<field name="repuestos_ganancia" class="java.lang.Double"/>
+	<field name="repuestos_descripcion" class="java.lang.String"/>
+	<field name="repuestos_stock_minimo" class="java.lang.Integer"/>
+	<field name="repuestos_stock_maximo" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="211" y="24" width="401" height="50" uuid="7b8fd72a-9823-473f-8c98-8b1a0165c92f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte Ferre Repuestos OC Repuestos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="316" y="15" width="183" height="20" uuid="63c5fa2b-413e-498c-8066-03b6d2442083"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CREATE: WILLROSS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="253" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 2" style="table 2" x="0" y="0" width="802" height="138" uuid="41186ecd-ef3f-416d-84ea-543983da0d08"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Repuestos" uuid="907aff0b-c130-44af-8f48-d77cb4ee423c">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="54" uuid="18aadd70-4927-4d32-87dc-a6828f4e868f">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="54" height="30" uuid="161a4b79-6a50-4c30-8543-f3e5d9d1229d"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CODIGO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="54" height="20" uuid="5695460d-e1ac-4320-ba9e-02c126a92fd9"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_codigo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="83" uuid="2e1b8379-9fcb-40d2-bc2d-8e85dc83ee4a">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="83" height="30" uuid="1007aab9-021d-482d-97a8-db086e2c51ab"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[NOMBRE]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="83" height="20" uuid="5b045a6b-8646-4b3b-a8a3-70a10a4f9ad4"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="67" uuid="fe0f8335-9284-4031-88e2-410021a71454">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="67" height="30" uuid="944c5181-11c1-4a49-b6b2-83327678dcc6"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CANTIDAD]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="67" height="20" uuid="546636c8-951d-491b-a953-0f3f39a7cfae"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_cantidad}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="e5795964-4e16-45c8-9121-776f6f2f0e7c">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="5918524a-a7b0-4fd1-957c-573fdedb1077"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CATEGORIA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="cc2afff9-22d7-4346-98e9-4b733e7c43f6"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_categoria}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="18ea06b5-6dbc-4080-856d-43f2d2be3b01">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="918a1ae7-de6d-41aa-ae8d-fd11635a4bd9"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[PRECIO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="20" uuid="29101cb5-eb50-4265-a25f-8b204588e46f"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_precio}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="73" uuid="17965ba6-c0a5-4048-94ed-dbd5bd5e96fb">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="73" height="30" uuid="0fdacf5e-1adc-4610-b0f1-3a50d14f3bf7"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[IMPUESTO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="73" height="20" uuid="1fb00a5a-de43-4329-97e1-59f62ccbeadd"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_impuesto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="73" uuid="bd773045-348e-40f8-9688-3811e20f3c8a">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="73" height="30" uuid="cbc48fc3-711a-4e6e-96d3-9c93ae1b2ec4"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[GANANCIA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="73" height="20" uuid="88aa73f3-0276-425c-90eb-407c89c96ba7"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_ganancia}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="104" uuid="bfbe1a45-7c61-47ab-b39c-612f4588b00e">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="104" height="30" uuid="2f56f498-0bfc-498b-a6e0-b7f792a965d9"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[DESCCRIPCION]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="104" height="20" uuid="e0bbd568-8e18-4862-a543-43ec9f377bae"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_descripcion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="dfb66cdc-e212-4da0-8e7e-cb42fb7d5512">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="48219c58-61b7-4fc0-b2d9-94eb86dc2686"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[STOCK MINIMO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="20" uuid="cd981aa9-f24f-43bf-8664-0b362f502387"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_stock_minimo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="98" uuid="8e573562-8d0f-452d-9b96-764ac963b197">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="98" height="30" uuid="700125d3-b7b0-46ca-95e6-6ff9fe06dd86"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[STOCK MAXIMO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="98" height="20" uuid="d986fae1-2e3c-43a4-9ba1-572f133ef78e"/>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{repuestos_stock_maximo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="359" y="233" width="100" height="20" uuid="c963880c-e412-4449-939c-8a3b9a6890de"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

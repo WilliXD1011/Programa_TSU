@@ -1,16 +1,32 @@
 package Formularios;
 
-import Clases.Conexion;
 import Clases.DBConexion;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Frame;
+import java.io.InputStream;
 import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -23,12 +39,9 @@ import javax.swing.table.TableRowSorter;
 public class Proveedores extends javax.swing.JFrame {
 
     int idc;
-
     Statement st;
     ResultSet rs;
-
     Connection con;
-
     DefaultTableModel Tabla1;
 
     /**
@@ -36,8 +49,12 @@ public class Proveedores extends javax.swing.JFrame {
      */
     public Proveedores() {
         initComponents();
-        consulta();
+        this.con = DBConexion.conectar();
+        Consulta();
         setIconImage(new ImageIcon(getClass().getResource("/icono.png")).getImage());
+        STATUS();
+        this.setDefaultCloseOperation(0);
+
     }
 
     /**
@@ -53,22 +70,26 @@ public class Proveedores extends javax.swing.JFrame {
         NOMBRE = new javax.swing.JTextField();
         CORREO = new javax.swing.JTextField();
         TELEFONO = new javax.swing.JTextField();
+        FILTRADO = new javax.swing.JTextField();
         DIRECCION = new javax.swing.JTextField();
-        STATUS = new javax.swing.JTextField();
-        regresar = new javax.swing.JButton();
+        buscar = new javax.swing.JButton();
         limpiar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         eliminar = new javax.swing.JButton();
-        modificar = new javax.swing.JButton();
+        actualizar = new javax.swing.JButton();
+        reporte = new javax.swing.JButton();
         registrar = new javax.swing.JButton();
+        regresar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Proveedores = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        STATUS = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
@@ -76,43 +97,53 @@ public class Proveedores extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        RIF.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        RIF.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         RIF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 RIFKeyReleased(evt);
             }
         });
-        getContentPane().add(RIF, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 250, -1));
+        getContentPane().add(RIF, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 250, 40));
 
-        NOMBRE.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        NOMBRE.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         NOMBRE.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 NOMBREKeyReleased(evt);
             }
         });
-        getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 250, -1));
+        getContentPane().add(NOMBRE, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 250, 40));
 
-        CORREO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 200, 250, -1));
+        CORREO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        getContentPane().add(CORREO, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 200, 250, 40));
 
-        TELEFONO.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 250, -1));
-
-        DIRECCION.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(DIRECCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 250, -1));
-
-        STATUS.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(STATUS, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 300, 250, -1));
-
-        regresar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        regresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
-        regresar.setText("Regresar");
-        regresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regresarActionPerformed(evt);
+        TELEFONO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        TELEFONO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TELEFONOKeyTyped(evt);
             }
         });
-        getContentPane().add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 140, -1));
+        getContentPane().add(TELEFONO, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 280, 250, 40));
+
+        FILTRADO.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        FILTRADO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                FILTRADOKeyReleased(evt);
+            }
+        });
+        getContentPane().add(FILTRADO, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 340, 35));
+
+        DIRECCION.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        getContentPane().add(DIRECCION, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 120, 250, 40));
+
+        buscar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/buscar.png"))); // NOI18N
+        buscar.setText("BUSCAR");
+        buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 650, -1, -1));
 
         limpiar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/limpiar.png"))); // NOI18N
@@ -122,12 +153,12 @@ public class Proveedores extends javax.swing.JFrame {
                 limpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 650, -1, -1));
+        getContentPane().add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 650, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("CORREO");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, -1, 30));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, -1, 40));
 
         eliminar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eliminar.png"))); // NOI18N
@@ -139,15 +170,25 @@ public class Proveedores extends javax.swing.JFrame {
         });
         getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 650, -1, -1));
 
-        modificar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/modificar.png"))); // NOI18N
-        modificar.setText("MODIFICAR");
-        modificar.addActionListener(new java.awt.event.ActionListener() {
+        actualizar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/modificar.png"))); // NOI18N
+        actualizar.setText("ACTUALIZAR");
+        actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modificarActionPerformed(evt);
+                actualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 650, -1, -1));
+        getContentPane().add(actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 650, -1, -1));
+
+        reporte.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        reporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/report.png"))); // NOI18N
+        reporte.setText("REPORTE");
+        reporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reporteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(reporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 650, -1, -1));
 
         registrar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         registrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/registrar.png"))); // NOI18N
@@ -157,7 +198,17 @@ public class Proveedores extends javax.swing.JFrame {
                 registrarActionPerformed(evt);
             }
         });
-        getContentPane().add(registrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 650, 150, -1));
+        getContentPane().add(registrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 650, 150, -1));
+
+        regresar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        regresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
+        regresar.setText("Regresar");
+        regresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regresarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 140, -1));
 
         Proveedores.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         Proveedores.setModel(new javax.swing.table.DefaultTableModel(
@@ -190,37 +241,51 @@ public class Proveedores extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Proveedores);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 1000, 270));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 1000, 260));
+
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("FILTRADO");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, -1, 40));
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("STATUS");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 300, -1, 30));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, -1, 40));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("DIRECCION");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, -1, 30));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 120, -1, 40));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("TELEFONO");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, -1, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, -1, 40));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("NOMBRE");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, 30));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, 40));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("RIF");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, 30));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("REGISTRAR PROVEEDOR");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 0, -1, -1));
+
+        STATUS.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        STATUS.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        STATUS.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                STATUSMouseClicked(evt);
+            }
+        });
+        getContentPane().add(STATUS, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, 250, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usar.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 720));
@@ -234,33 +299,62 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
         // TODO add your handling code here:
-        limpiar();
+        Limpiar();
         limpiartabla();
-        consulta();
+        Consulta();
 
     }//GEN-LAST:event_limpiarActionPerformed
-
-    private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
-        Menu m = new Menu();
-        m.show();
-        dispose();
-
-
-    }//GEN-LAST:event_regresarActionPerformed
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
         // TODO add your handling code here:
 
-        registrar();
+        String rif = this.RIF.getText().trim();
+        String nombre = this.NOMBRE.getText().trim();
+        String telefono = this.TELEFONO.getText().trim();
+        String Direccion = this.DIRECCION.getText().trim();
+        String Correo = this.CORREO.getText().trim();
+
+        String status = (String) this.STATUS.getSelectedItem();
+
+        if (rif.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || Direccion.isEmpty() || Correo.isEmpty() || status.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "❌ Es necesario llenar todos los campos. Por favor, complete la información del proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String Query = "INSERT INTO Proveedor (rif,nombre,telefono,direccion,correo,status) VALUES (?,?,?,?,?,?)";
+
+        try {
+            Connection con = DBConexion.conectar();
+            PreparedStatement ps = con.prepareStatement(Query);
+
+            ps.setString(1, rif);
+            ps.setString(2, nombre);
+            ps.setString(3, telefono);
+            ps.setString(4, Direccion);
+            ps.setString(5, Correo);
+            ps.setString(6, status);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "✅ Se ha registrado el proveedor con éxito!");
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "❌ Error al registrar en la base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
         limpiartabla();
-        consulta();
-        limpiar();
+        Consulta();
+        Limpiar();
     }//GEN-LAST:event_registrarActionPerformed
 
     private void ProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProveedoresMouseClicked
-        // TODO add your handling code here:
 
         int fila = Proveedores.getSelectedRow();
+
+        STATUS.removeAllItems();
+        STATUS.addItem("Activo");
+        STATUS.addItem("Inactivo");
 
         if (fila != -1) {
             try {
@@ -277,12 +371,13 @@ public class Proveedores extends javax.swing.JFrame {
                 TELEFONO.setText(telefono);
                 DIRECCION.setText(direccion);
                 CORREO.setText(correo);
-                STATUS.setText(status);
+
+                STATUS.setSelectedItem(status);
 
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null,
-                        "Error: El formato de los datos numéricos es incorrecto (Ej.",
+                        "Error: El formato de los datos numéricos es incorrecto.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
 
@@ -300,51 +395,224 @@ public class Proveedores extends javax.swing.JFrame {
                     "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
         }
-
-
     }//GEN-LAST:event_ProveedoresMouseClicked
 
-    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+    private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
         // TODO add your handling code here:
-        Modificado();
+
+        String rif = this.RIF.getText().trim();
+        String nombre = this.NOMBRE.getText().trim();
+        String telefono = this.TELEFONO.getText().trim();
+        String Direccion = this.DIRECCION.getText().trim();
+        String Correo = this.CORREO.getText().trim();
+
+        String status = (String) this.STATUS.getSelectedItem();
+
+        if (rif.isEmpty() || nombre.isEmpty() || telefono.isEmpty()
+                || Direccion.isEmpty() || Correo.isEmpty() || status.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Es necesario llenar todos los campos. Por favor, complete la información para actualizar al proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String Query = "UPDATE proveedor SET nombre=?, telefono=?, direccion=?, correo=?, status=? WHERE RIF=?";
+
+        try {
+
+            Connection con = DBConexion.conectar();
+            PreparedStatement ps = con.prepareStatement(Query);
+
+            ps.setString(1, nombre);
+            ps.setString(2, telefono);
+            ps.setString(3, Direccion);
+            ps.setString(4, Correo);
+            ps.setString(5, status);
+            ps.setString(6, rif);
+
+            int filas = ps.executeUpdate();
+
+            if (filas > 0) {
+                JOptionPane.showMessageDialog(null, "✅ Datos actualizados correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ No se encontró el proveedor con el RIF.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "❌ Error al actualizar los datos en la base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         limpiartabla();
-        consulta();
-        limpiar();
-    }//GEN-LAST:event_modificarActionPerformed
+        Consulta();
+        Limpiar();
+    }//GEN-LAST:event_actualizarActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         // TODO add your handling code here:
-        eliminar();
+
+        int fila = Proveedores.getSelectedRow();
+
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            limpiartabla();
+            return;
+        }
+
+        try {
+
+            String identificadorAEliminar = String.valueOf(Proveedores.getValueAt(fila, 0));
+
+            if (identificadorAEliminar == null || identificadorAEliminar.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El identificador del proveedor es nulo o vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int opcion = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Está seguro de eliminar el proveedor con RIF " + identificadorAEliminar + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+
+                Connection con = DBConexion.conectar();
+
+                String Query = "DELETE FROM proveedor WHERE rif = ?";
+                PreparedStatement ps = con.prepareStatement(Query);
+
+                ps.setString(1, identificadorAEliminar);
+
+                int filasAfectadas = ps.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(null, "✅ El proveedor con RIF " + identificadorAEliminar + " ha sido eliminado con éxito.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró el proveedor con el RIF seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                ps.close();
+                con.close();
+
+                limpiartabla();
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "La eliminación ha sido cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         limpiartabla();
-        consulta();
-        limpiar();
+        Consulta();
+
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void RIFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RIFKeyReleased
         // TODO add your handling code here:
-        String CriterioBusqueda = this.RIF.getText().trim();
 
-        DefaultTableModel ModeloObtenido = (DefaultTableModel) Proveedores.getModel();
-
-        TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
-
-        Proveedores.setRowSorter(ordenador);
-
-        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 0));
     }//GEN-LAST:event_RIFKeyReleased
 
     private void NOMBREKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBREKeyReleased
-        // TODO add your handling code here:
-        String CriterioBusqueda = this.NOMBRE.getText().trim();
+
+    }//GEN-LAST:event_NOMBREKeyReleased
+
+    private void STATUSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_STATUSMouseClicked
+
+        STATUS();
+    }//GEN-LAST:event_STATUSMouseClicked
+
+    private void TELEFONOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TELEFONOKeyTyped
+        char c = evt.getKeyChar();
+        boolean esNumero = Character.isDigit(c);
+        boolean esGuion = (c == '-');
+        boolean esBorrado = (c == java.awt.event.KeyEvent.VK_BACK_SPACE);
+        if (!esNumero && !esGuion && !esBorrado) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_TELEFONOKeyTyped
+
+    private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
+
+        int encontrado = 0;
+
+        String query = "SELECT NOMBRE, TELEFONO, DIRECCION, CORREO, STATUS FROM proveedor WHERE RIF = ?";
+        String rifABuscar = this.RIF.getText();
+
+        try (Connection con = this.con;
+                PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, rifABuscar);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                if (rs.next()) {
+
+                    this.NOMBRE.setText(rs.getString(1));
+                    this.TELEFONO.setText(rs.getString(2));
+                    this.DIRECCION.setText(rs.getString(3));
+                    this.CORREO.setText(rs.getString(4));
+
+                    String statusProveedor = rs.getString(5);
+                    this.STATUS.setSelectedItem(statusProveedor);
+
+                    encontrado = 1;
+                }
+            }
+
+            if (encontrado == 1) {
+
+            } else {
+                JOptionPane.showMessageDialog(null, "El proveedor no está registrado.");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage());
+        }
+    }//GEN-LAST:event_buscarActionPerformed
+
+    private void reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteActionPerformed
+        try {
+            InputStream archivo = getClass().getResourceAsStream("/Reportes/Proveedor.jrxml");
+            JasperDesign dise = JRXmlLoader.load(archivo);
+            JasperReport jr = JasperCompileManager.compileReport(dise);
+
+            Map<String, Object> parametros = new HashMap<>();
+
+            JasperPrint jp = JasperFillManager.fillReport(jr, parametros, con);
+
+            JasperViewer viewer = new JasperViewer(jp, false);
+
+            disableAllExceptSave(viewer);
+
+            viewer.setExtendedState(Frame.MAXIMIZED_BOTH);
+            viewer.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_reporteActionPerformed
+
+    private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
+        Menu m = new Menu();
+        m.show();
+        dispose();
+    }//GEN-LAST:event_regresarActionPerformed
+
+    private void FILTRADOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FILTRADOKeyReleased
+        String CriterioBusqueda = this.FILTRADO.getText().trim();
+
+        String expresionRegEx = "(?i)" + Pattern.quote(CriterioBusqueda);
 
         DefaultTableModel ModeloObtenido = (DefaultTableModel) Proveedores.getModel();
-
         TableRowSorter<DefaultTableModel> ordenador = new TableRowSorter<>(ModeloObtenido);
 
         Proveedores.setRowSorter(ordenador);
 
-        ordenador.setRowFilter(RowFilter.regexFilter(CriterioBusqueda, 1));
-    }//GEN-LAST:event_NOMBREKeyReleased
+        ordenador.setRowFilter(RowFilter.regexFilter(expresionRegEx, 1));
+    }//GEN-LAST:event_FILTRADOKeyReleased
 
     /**
      * @param args the command line arguments
@@ -372,6 +640,13 @@ public class Proveedores extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Proveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -381,7 +656,55 @@ public class Proveedores extends javax.swing.JFrame {
         });
     }
 
-    void consulta() {
+    private void disableAllNavigation(JasperViewer viewer) {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                disableAllExceptSave(viewer.getContentPane());
+            }
+        });
+    }
+
+    private void disableAllExceptSave(Container container) {
+        for (Component comp : container.getComponents()) {
+
+            if (comp instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) comp;
+                if (!isSaveButton(button)) {
+                    button.setEnabled(false);
+                }
+            } else if (comp instanceof JTextField) {
+                JTextField textField = (JTextField) comp;
+                textField.setEnabled(false);
+                textField.setEditable(false);
+            } else if (comp instanceof JComboBox) {
+                ((JComboBox<?>) comp).setEnabled(false);
+            }
+
+            if (comp instanceof Container) {
+                disableAllExceptSave((Container) comp);
+            }
+        }
+    }
+
+    private boolean isSaveButton(AbstractButton button) {
+        String toolTip = button.getToolTipText();
+        if (toolTip != null) {
+            String lowerToolTip = toolTip.toLowerCase();
+
+            return lowerToolTip.contains("save")
+                    || lowerToolTip.contains("guardar")
+                    || lowerToolTip.contains("export")
+                    || lowerToolTip.contains("pdf")
+                    || lowerToolTip.contains("exportar")
+                    || lowerToolTip.contains("print")
+                    || lowerToolTip.contains("imprimir");
+        }
+        return false;
+    }
+
+    public void Consulta() {
+
         String sql = "select * from proveedor";
 
         try {
@@ -410,52 +733,7 @@ public class Proveedores extends javax.swing.JFrame {
 
     }
 
-    void registrar() {
-
-        String rif = this.RIF.getText();
-
-        String nombre = this.NOMBRE.getText();
-
-        String Direccion = this.TELEFONO.getText();
-
-        String Correo = this.DIRECCION.getText();
-
-        String telefono = this.CORREO.getText();
-
-        String status = this.STATUS.getText();
-
-        String Query = "INSERT INTO Proveedor (rif,nombre,telefono,direccion,correo,status) VALUES (?,?,?,?,?,?)";
-
-        try {
-
-            Connection con = DBConexion.conectar();
-
-            PreparedStatement ps = con.prepareStatement(Query);
-
-            ps.setString(1, rif);
-
-            ps.setString(2, nombre);
-
-            ps.setString(3, telefono);
-
-            ps.setString(4, Direccion);
-
-            ps.setString(5, Correo);
-
-            ps.setString(6, status);
-
-            ps.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Se ha registrado proveedor con exito!");
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-
-        }
-    }
-
-    void limpiartabla() {
+    public void limpiartabla() {
         DefaultTableModel modelo = (DefaultTableModel) Proveedores.getModel();
 
         while (modelo.getRowCount() > 0) {
@@ -464,106 +742,34 @@ public class Proveedores extends javax.swing.JFrame {
 
     }
 
-    void limpiar() {
+    public void Limpiar() {
 
         this.DIRECCION.setText("");
         this.TELEFONO.setText("");
         this.RIF.setText("");
-        this.STATUS.setText("");
+        STATUS.removeAllItems();
         this.CORREO.setText("");
         this.NOMBRE.setText("");
     }
 
-    void Modificado() {
-
-        String rif = this.RIF.getText();
-        String nombre = this.NOMBRE.getText();
-        String telefono = this.TELEFONO.getText();
-        String Direccion = this.DIRECCION.getText();
-        String Correo = this.CORREO.getText();
-        String status = this.STATUS.getText();
-
-        String Query = "UPDATE proveedor SET nombre=?, telefono=?, direccion=?, correo=?,status=? WHERE RIF=?";
-
-        try {
-            Connection con = DBConexion.conectar();
-            PreparedStatement ps = con.prepareStatement(Query);
-
-            ps.setString(1, nombre);
-            ps.setString(2, telefono);
-            ps.setString(3, Direccion);
-            ps.setString(4, Correo);
-            ps.setString(5, status);
-            ps.setString(6, rif); //Dato de referencia del proveedor
-
-            int filas = ps.executeUpdate();
-
-            if (filas > 0) {
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el código proporcionado");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-
+    void STATUS() {
+        STATUS.removeAllItems();
+        STATUS.addItem("Activo");
+        STATUS.addItem("Inactivo");
     }
 
-    void eliminar() {
-        int fila = Proveedores.getSelectedRow();
-
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.");
-
-            limpiartabla();
-            return;
-        }
-
-        try {
-
-            String identificadorAEliminar = String.valueOf(Proveedores.getValueAt(fila, 0));
-
-            if (identificadorAEliminar == null || identificadorAEliminar.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error: El identificador del proveedor es nulo o vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Connection con = DBConexion.conectar();
-
-            String Query = "DELETE FROM proveedor WHERE rif = ?";
-            PreparedStatement ps = con.prepareStatement(Query);
-
-            ps.setString(1, identificadorAEliminar);
-
-            int filasAfectadas = ps.executeUpdate();
-
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "El proveedor con RIF/Identificador " + identificadorAEliminar + " ha sido eliminado.");
-                limpiartabla();
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el proveedor con el RIF/Identificador seleccionado.");
-            }
-
-            ps.close();
-            con.close();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CORREO;
     private javax.swing.JTextField DIRECCION;
+    private javax.swing.JTextField FILTRADO;
     private javax.swing.JTextField NOMBRE;
     private javax.swing.JTable Proveedores;
     private javax.swing.JTextField RIF;
-    private javax.swing.JTextField STATUS;
+    private javax.swing.JComboBox<String> STATUS;
     private javax.swing.JTextField TELEFONO;
+    private javax.swing.JButton actualizar;
+    private javax.swing.JButton buscar;
     private javax.swing.JButton eliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -573,11 +779,12 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton limpiar;
-    private javax.swing.JButton modificar;
     private javax.swing.JButton registrar;
     private javax.swing.JButton regresar;
+    private javax.swing.JButton reporte;
     // End of variables declaration//GEN-END:variables
 }
